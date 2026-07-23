@@ -11,6 +11,8 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AllowAnonim } from './decorators/allowanonim.decorator';
+import { RegisterUserDto } from 'src/users/dto/register-user.dto';
+import { LoginUserDto } from 'src/users/dto/login-user-dto';
 
 @Controller('auth')
 export class AuthController {
@@ -19,8 +21,15 @@ export class AuthController {
     @AllowAnonim()
     @HttpCode(HttpStatus.OK)
     @Post('login')
-    signIn(@Body() signInDto: Record<string, any>) {
-        return this.authService.signIn(signInDto.username, signInDto.password);
+    signIn(@Body() loginUserDto: LoginUserDto) {
+        return this.authService.signIn(loginUserDto);
+    }
+
+    @AllowAnonim()
+    @HttpCode(HttpStatus.OK)
+    @Post('register')
+    register(@Body() registerUserDto: RegisterUserDto) {
+        return this.authService.register(registerUserDto);
     }
 
     @Get('profile')

@@ -1,23 +1,50 @@
-import { Injectable } from '@nestjs/common';
-
-export type User = any;
+import { ConflictException, Injectable, NotFoundException } from '@nestjs/common';
+import { UpdateUserDto } from './dto/update-user.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { User } from './entities/user.entity';
+import { RegisterUserDto } from './dto/register-user.dto';
 
 @Injectable()
 export class UsersService {
-    private readonly users = [
-        {
-            userId: 1,
-            username: 'john',
-            password: 'changeme',
-        },
-        {
-            userId: 2,
-            username: 'maria',
-            password: 'guess',
-        },
-    ];
+  constructor(
+    @InjectRepository(User) private userRepository: Repository<User>,
+  ) { }
+  async create(registerUserDto: RegisterUserDto): Promise<User> {
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.users.find(user => user.username === username);
+    const existingUser = await this.findByName(registerUserDto.username!);
+
+    if (existingUser != null) {
+      throw new ConflictException();
     }
+    const user = new User();
+    user.username = registerUserDto.username!;
+    user.password = registerUserDto.password!; // TODO: HASH
+    return await this.userRepository.save(user);
+  }
+
+  async findAll(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
+
+  async findOne(id: string): Promise<User | null> {
+    return await this.userRepository.findOne({ where: { user_id: id } });
+  }
+
+  async findByName(username: string): Promise<User | null> {
+    return await this.userRepository.findOne({ where: { username: username } });
+  }
+
+  async update(id: string, updateUserDto: UpdateUserDto): Promise<User> {
+    const user = await this.userRepository.findOne({ where: { user_id: id } });
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    await this.userRepository.update({ user_id: id }, updateUserDto);
+    return user;
+  }
+
+  async remove(id: string): Promise<void> {
+    await this.userRepository.delete(id);
+  }
 }
