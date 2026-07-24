@@ -12,11 +12,12 @@ export class UsersService {
   ) { }
   async create(registerUserDto: RegisterUserDto): Promise<User> {
 
-    const existingUser = await this.findByName(registerUserDto.username!);
+    const existingUSer = await this.findByName(registerUserDto.username!);
 
-    if (existingUser != null) {
+    if(existingUSer) {
       throw new ConflictException();
     }
+
     const user = new User();
     user.username = registerUserDto.username!;
     user.password = registerUserDto.password!; // TODO: HASH
@@ -25,6 +26,10 @@ export class UsersService {
 
   async findAll(): Promise<User[]> {
     return await this.userRepository.find();
+  }
+
+  async checkIfUserExists(username: string) {
+    return await this.userRepository.existsBy({ username: username });
   }
 
   async findOne(id: string): Promise<User | null> {
