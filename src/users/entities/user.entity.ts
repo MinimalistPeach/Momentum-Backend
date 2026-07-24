@@ -1,16 +1,16 @@
 import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
-@Entity()
+@Entity("users")
 export class User {
     @PrimaryGeneratedColumn("uuid")
     user_id?: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 255 })
     username?: string;
 
-    @Column()
+    @Column({ type: "varchar", length: 255 })
     password?: string;
 
-    @Column()
+    @Column({ type: "timestamptz", default: () => "CURRENT_TIMESTAMP" })
     registration_date?: Date;
 }
