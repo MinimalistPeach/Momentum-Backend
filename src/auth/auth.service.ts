@@ -9,7 +9,7 @@ export class AuthService {
     constructor(private readonly usersService: UsersService, private readonly jwtService: JwtService) { }
 
     async register(registerUserDto: RegisterUserDto): Promise<void> {
-        this.usersService.create(registerUserDto);
+        await this.usersService.create(registerUserDto);
     }
 
     async signIn(
