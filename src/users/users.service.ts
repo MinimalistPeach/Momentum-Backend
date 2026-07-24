@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { RegisterUserDto } from './dto/register-user.dto';
+import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class UsersService {
@@ -14,13 +15,17 @@ export class UsersService {
 
     const existingUSer = await this.findByName(registerUserDto.username!);
 
-    if(existingUSer) {
+    if (existingUSer) {
       throw new ConflictException();
     }
 
+
+    const salt = await bcrypt.genSalt();
+    const hash = await bcrypt.hash(registerUserDto.password!, salt);
+
     const user = new User();
     user.username = registerUserDto.username!;
-    user.password = registerUserDto.password!; // TODO: HASH
+    user.password = hash;
     return await this.userRepository.save(user);
   }
 
