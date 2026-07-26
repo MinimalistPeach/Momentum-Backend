@@ -1,0 +1,15 @@
+services:
+  backend:
+    container_name: momentum-backend
+    image: momentum-backend:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    environment:
+      # Internal server error messages will not send stacktrace to the browser in production
+      - NODE_ENV=production
+      # Sets the timezone of the containers OS
+      - TZ=Europe/Budapest
+    restart: always
+    ports:
+      - 8000:8000
