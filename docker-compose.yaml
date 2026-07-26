@@ -15,9 +15,9 @@ services:
       - POSTGRES_DB=momentum-db
       - JWT_SECRET=DO NOT USE THIS VALUE. INSTEAD, CREATE A COMPLEX SECRET AND KEEP IT SAFE OUTSIDE OF THE SOURCE CODE.
       - JWT_EXPIRY=60s
-      - PORT=8000
+      - PORT=8091
       # Sets the timezone of the containers OS
       - TZ=Europe/Budapest
     restart: always
     ports:
-      - 8000:8000
+      - 8091:8091
