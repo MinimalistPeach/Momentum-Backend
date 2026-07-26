@@ -8,7 +8,7 @@ services:
     environment:
       # Internal server error messages will not send stacktrace to the browser in production
       - NODE_ENV=production
-      - POSTGRES_HOST=127.0.0.1
+      - POSTGRES_HOST=192.168.100.9
       - POSTGRES_PORT=5432
       - POSTGRES_USER=admin
       - POSTGRES_PASSWORD=maselocaldev1234
