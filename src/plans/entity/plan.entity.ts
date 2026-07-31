@@ -1,5 +1,4 @@
-import { User } from "src/users/entities/user.entity";
-import { Column, Entity, ForeignKey, PrimaryGeneratedColumn } from "typeorm";
+import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
 
 @Entity("plans")
 export class Plan {

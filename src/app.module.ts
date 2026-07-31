@@ -9,10 +9,12 @@ import { DatabaseModule } from './database/database.module';
 import { ConfigModule } from '@nestjs/config';
 import { UsersService } from './users/users.service';
 import { HttpExceptionFilter } from './exception-filters/http-exception.filter';
+import { PlanModule } from './plans/plan.module';
 
 @Module({
   imports: [AuthModule,
     UsersModule,
+    PlanModule,
     ConfigModule.forRoot({
       isGlobal: true,
     }),
