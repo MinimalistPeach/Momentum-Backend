@@ -13,5 +13,11 @@ export class PlanController {
         return this.planService.create(createPlanDto, req.headers);
     }
 
+    @HttpCode(HttpStatus.OK)
+    @Get('/all-by-user')
+    getAllByUser(@Request() req: any) {
+        return this.planService.getAllUserPlans(req.headers);
+    }
+
 
 }
